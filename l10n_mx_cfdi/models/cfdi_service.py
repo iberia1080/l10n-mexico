@@ -359,9 +359,8 @@ class CFDIService(models.Model):
             from ..services import facturama_adapter
 
             pac = facturama_adapter.ensure_facturama_pac_for_cfdi(pac, self, cfdi)
-        # Prefer XML+PDF when the PAC can return both in one call (avoids brittle
-        # recover() shapes such as SW Sapien's raw dict response).
-        accept = Accept.XML_PDF
+        # Request PDF only from PAC adapters that support it.
+        accept = Accept.XML_PDF if provider.supports_pdf else Accept.XML
         try:
             if provider.supports_issue:
                 document = pac.issue(cfdi, accept=accept)

@@ -67,6 +67,7 @@ class TestCFDIService(TransactionCase):
             mock_build.assert_called_once()
 
     def test_create_cfdi_uses_issue_when_supported(self):
+        self.cfdi_service.provider = "diverza"
         mock_pac = MagicMock()
         mock_pac.issue.return_value = Document(
             document_id="doc-1",

@@ -16,6 +16,7 @@ class PacProvider:
     module: str
     class_name: str
     supports_issue: bool
+    supports_pdf: bool
     supports_cancel: bool
     requires_signer_for_cancel: bool
     kwargs_builder: Callable[[Any, Environment], dict]
@@ -93,6 +94,7 @@ PAC_PROVIDERS: dict[str, PacProvider] = {
         module="satcfdi.pacs.finkok",
         class_name="Finkok",
         supports_issue=True,
+        supports_pdf=False,
         supports_cancel=True,
         requires_signer_for_cancel=True,
         kwargs_builder=_finkok_kwargs,
@@ -103,6 +105,7 @@ PAC_PROVIDERS: dict[str, PacProvider] = {
         module="satcfdi.pacs.diverza",
         class_name="Diverza",
         supports_issue=True,
+        supports_pdf=True,
         supports_cancel=True,
         requires_signer_for_cancel=False,
         kwargs_builder=_diverza_kwargs,
@@ -113,6 +116,7 @@ PAC_PROVIDERS: dict[str, PacProvider] = {
         module="satcfdi.pacs.prodigia",
         class_name="Prodigia",
         supports_issue=False,
+        supports_pdf=True,
         supports_cancel=False,
         requires_signer_for_cancel=False,
         kwargs_builder=_prodigia_kwargs,
@@ -123,6 +127,7 @@ PAC_PROVIDERS: dict[str, PacProvider] = {
         module="satcfdi.pacs.comerciodigital",
         class_name="ComercioDigital",
         supports_issue=False,
+        supports_pdf=False,
         supports_cancel=False,
         requires_signer_for_cancel=False,
         kwargs_builder=_comerciodigital_kwargs,
@@ -132,7 +137,10 @@ PAC_PROVIDERS: dict[str, PacProvider] = {
         label="SW Sapien",
         module="satcfdi.pacs.swsapien",
         class_name="SWSapien",
-        supports_issue=True,
+        # Use the issuer CSD stored in Odoo to sign locally, then stamp at SW.
+        # SW issue() expects the issuer certificate to be registered at SW.
+        supports_issue=False,
+        supports_pdf=True,
         supports_cancel=True,
         requires_signer_for_cancel=False,
         kwargs_builder=_swsapien_kwargs,
@@ -143,6 +151,7 @@ PAC_PROVIDERS: dict[str, PacProvider] = {
         module="satcfdi.pacs.mysuite",
         class_name="MYSuite",
         supports_issue=False,
+        supports_pdf=False,
         supports_cancel=False,
         requires_signer_for_cancel=False,
         kwargs_builder=_mysuite_kwargs,
@@ -153,6 +162,7 @@ PAC_PROVIDERS: dict[str, PacProvider] = {
         module="satcfdi.pacs.facturama",
         class_name="Facturama",
         supports_issue=True,
+        supports_pdf=True,
         supports_cancel=True,
         requires_signer_for_cancel=False,
         kwargs_builder=_facturama_kwargs,
